@@ -292,11 +292,10 @@ if test "x$have_gtk4" = "xyes"; then
   AC_SUBST(GTK4_LIBDIR)
   AC_SUBST(GTK4_BINARY_VERSION)
 fi
-AC_PATH_PROGS([GTK_QUERY_IMMODULES3],
-              [gtk-query-immodules-3.0 gtk-query-immodules-3.0-$BITS], [no],
-              [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk-3-0:\
-/usr/lib/x86_64-linux-gnu/libgtk-3-0t64:/usr/lib/x86_64-linux-gnu/libgtk-3-0:\
-/usr/lib/aarch64-linux-gnu/libgtk-3-0t64:/usr/lib/aarch64-linux-gnu/libgtk-3-0])
+
+
+GTK_QUERY_IMMODULES3="$GTK3_LIBDIR"/gtk-3.0/$GTK3_BINARY_VERSION/immodules.cache
+
 if test "x$GTK_QUERY_IMMODULES3" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-3.0 or gtk-query-immodules-3.0-$BITS not found])
 fi
@@ -305,20 +304,15 @@ GTK2_LIBDIR=`pkg-config --variable=libdir gtk+-2.0`
 GTK2_BINARY_VERSION=`pkg-config --variable=gtk_binary_version gtk+-2.0`
 AC_SUBST(GTK2_LIBDIR)
 AC_SUBST(GTK2_BINARY_VERSION)
-AC_PATH_PROGS([GTK_QUERY_IMMODULES2],
-              [gtk-query-immodules-2.0 gtk-query-immodules-2.0-$BITS], [no],
-              [/usr/bin:/snap/gnome-42-2204/176/usr/lib/x86_64-linux-gnu/libgtk2.0-0:\
-/usr/lib/x86_64-linux-gnu/libgtk2.0-0t64:/usr/lib/x86_64-linux-gnu/libgtk2.0-0:\
-/usr/lib/aarch64-linux-gnu/libgtk2.0-0t64:/usr/lib/aarch64-linux-gnu/libgtk2.0-0])
+GTK_QUERY_IMMODULES2="$GTK2_LIBDIR"/gtk-2.0/$GTK2_BINARY_VERSION/immodules.cache
+
 if test "x$GTK_QUERY_IMMODULES2" = "xno"; then
   AC_MSG_ERROR([gtk-query-immodules-2.0 or gtk-query-immodules-2.0-$BITS not found])
 fi
 
 if test "x$have_gtk4" = "xyes"; then
-  AC_PATH_PROGS([GTK_QUERY_IMMODULES4],
-                [gtk4-query-immodules gtk4-query-immodules-$BITS], [no],
-                [/usr/bin:/usr/lib/x86_64-linux-gnu/libgtk-4-1:\
-/usr/lib/aarch64-linux-gnu/libgtk-4-1])
+  GTK_QUERY_IMMODULES4="$GTK4_LIBDIR"/gtk-4.0/$GTK4_BINARY_VERSION/immodules.cache
+
   if test "x$GTK_QUERY_IMMODULES4" = "xno"; then
     AC_MSG_WARN([gtk4-query-immodules not found, GTK4 IM module cache will not be updated])
   fi
@@ -330,7 +324,7 @@ dnl ***************************************************************************
 
 AC_PATH_PROGS([GTK_UPDATE_ICON_CACHE],
               [gtk-update-icon-cache-3.0 gtk-update-icon-cache], [no],
-              [/usr/bin:$GTK3_LIBDIR/libgtk-3-0:$GTK2_LIBDIR/libgtk2.0-0])
+              [$PATH:$GTK3_LIBDIR/libgtk-3-0:$GTK2_LIBDIR/libgtk2.0-1])
 if test "x$GTK_UPDATE_ICON_CACHE" = "xno"; then
   AC_MSG_ERROR([gtk-update-icon-cache-3.0 or gtk-update-icon-cache not found])
 fi
